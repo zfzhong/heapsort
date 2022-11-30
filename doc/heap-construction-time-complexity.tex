@@ -1,0 +1,103 @@
+\documentclass[11pt, oneside]{article}   	% use "amsart" instead of "article" for AMSLaTeX format
+%\usepackage{geometry}                		% See geometry.pdf to learn the layout options. There are lots.
+%\geometry{letterpaper}                   		% ... or a4paper or a5paper or ... 
+%\geometry{landscape}                		% Activate for rotated page geometry
+%\usepackage[parfill]{parskip}    		% Activate to begin paragraphs with an empty line rather than an indent
+
+\usepackage{geometry}
+ \geometry{
+ a4paper,
+ total={170mm,257mm},
+ left=20mm,
+ top=20mm,
+ bottom=20mm,
+ }
+
+\usepackage{graphicx}				% Use pdf, png, jpg, or eps§ with pdflatex; use eps in DVI mode
+								% TeX will automatically convert eps --> pdf in pdflatex		
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{fancyhdr}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage{enumerate}
+\usepackage{arcs}
+\usepackage{subfiles}
+
+%SetFonts
+
+%SetFonts
+
+\usepackage[inline]{asymptote}
+
+
+\pagestyle{fancy}
+\fancyhf{}
+\rhead{David}
+\lhead{\leftmark}
+\lfoot{Copyright \copyright  2019 - 2022 by David. All rights reserved.}
+\rfoot{Page \thepage}
+
+\title{Heap Construction Algorithm and Time Complexity Analysis}
+\author{ZuperDavid}
+%\date{}							% Activate to display a given date or no date
+\begin{document}
+\maketitle
+
+\section{HeapSort Implemented in Python 3}
+\begin{verbatim}
+class HeapSort:
+    def __init__(self, array):
+        self.array = array
+        self.length = len(array)
+
+    def swap(self, i, j):
+        tmp = self.array[i]
+        self.array[i] = self.array[j]
+        self.array[j] = tmp
+
+    def adjust_heap(self, i, n):
+        while 2*i + 1 < n:
+            child = 2*i + 1
+            
+            if child + 1 < n and self.array[child + 1] > self.array[child]:
+                child = child + 1
+
+            if self.array[i] >= self.array[child]:
+                return
+            
+            self.swap(i, child)
+            i = child
+        
+    def construct_heap(self):
+        i = (self.length - 1) // 2
+        while i >= 0:
+            self.adjust_heap(i, self.length)
+            i = i - 1
+
+    def sort(self):
+        self.construct_heap()
+        for i in range(0, self.length):
+            self.swap(0, self.length-i-1)
+            self.adjust_heap(0, self.length-i-1)
+
+\end{verbatim}
+
+\newpage
+\section{Time Complexity Analysis for Heap Construction}
+Essentially, we view all nodes in a binary tree structure: at level 0, there is only one node, e.g., the 1st node in the array;  there are at most $2^k$ nodes at level $k$.
+
+Suppose we have $n = 2^{k+1}-1$ elements in the array, and these $n$ nodes just forms a binary tree with $(k+1)$ levels: level 0, level 1, ..., level $k$. Starting from the last element in level $(k-1)$, the construction algorithms take it as a parent node and does heap adjustment. There are $2^{k-1}$ elements in the level $(k-1)$. For all the elements in this level, the heap adjustment just for the subtree formed by the parent and its two children, and the height of such subtree is 1.
+
+The complexity comes from that fact that, starting from level $(k-2)$ to level 0, the heap adjustment for any parent node $y$ might have to adjust the whole subtree rooted at $y$, and the time complexity of this adjustment is $O(h)$, where $h$ is the height of the subtree.
+
+The time complexity for heap construction is therefore:
+\[T = 2^{k-1} \cdot 1 + 2^{k-2}\cdot 2 + 2^{k-3}\cdot 3 + \cdots + 1\cdot k.\]
+
+To calculate $T$, we have
+\[2T = 2^k \cdot 1 + 2^{k-1}\cdot 2 + 2^{k-2}\cdot 3 + \cdots + 2\cdot k,\]
+and then,
+\[T = 2T - T = 2^k + 2^{k-1} + \cdots + 2^1 - k = 2^{k+1} - k - 2 =  n - k -1 = O(n).\]
+
+
+\end{document}  
