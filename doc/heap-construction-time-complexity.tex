@@ -87,9 +87,9 @@ class HeapSort:
 \section{Time Complexity Analysis for Heap Construction}
 Essentially, we view all nodes in a binary tree structure: at level 0, there is only one node, e.g., the 1st node in the array;  there are at most $2^k$ nodes at level $k$.
 
-Suppose we have $n = 2^{k+1}-1$ elements in the array, and these $n$ nodes just forms a binary tree with $(k+1)$ levels: level 0, level 1, ..., level $k$. Starting from the last element in level $(k-1)$, the construction algorithms take it as a parent node and does heap adjustment. There are $2^{k-1}$ elements in the level $(k-1)$. For all the elements in this level, the heap adjustment just for the subtree formed by the parent and its two children, and the height of such subtree is 1.
+Suppose we have $n = 2^{k+1}-1$ elements in the array, and these $n$ nodes just form a binary tree with $(k+1)$ levels: level 0, level 1, ..., level $k$. Starting from the last element in level $(k-1)$, the construction algorithm takes it as a parent node and does heap adjustment. There are $2^{k-1}$ elements in the level $(k-1)$. For every node in this level, the heap adjustment is just for the subtree formed by the parent and its two children, and the height of such a subtree is 1.
 
-The complexity comes from that fact that, starting from level $(k-2)$ to level 0, the heap adjustment for any parent node $y$ might have to adjust the whole subtree rooted at $y$, and the time complexity of this adjustment is $O(h)$, where $h$ is the height of the subtree.
+The complexity comes from the fact that, starting from level $(k-2)$ to level 0, the heap adjustment for any parent node $y$ might have to adjust the whole subtree rooted at $y$, and the time complexity of this adjustment is $O(h)$, where $h$ is the height of the subtree.
 
 The time complexity for heap construction is therefore:
 \[T = 2^{k-1} \cdot 1 + 2^{k-2}\cdot 2 + 2^{k-3}\cdot 3 + \cdots + 1\cdot k.\]
