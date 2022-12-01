@@ -99,5 +99,67 @@ To calculate $T$, we have
 and then,
 \[T = 2T - T = 2^k + 2^{k-1} + \cdots + 2^1 - k = 2^{k+1} - k - 2 =  n - k -1 = O(n).\]
 
+In Figure~\ref{fig:heap}, we provide an illustration of a heap with $2^4-1 = 15$ nodes, with analysis of the work at each level for building the heap.
+
+\begin{figure} [ht]
+\centering
+\begin{asy}
+size(12cm);
+void drawcircle(pair o, real r) {
+    filldraw(circle(o, r), white);
+}
+
+real r = 0.35;
+real h = 1.5;
+
+for (int i=0; i<8; ++i) {
+    int y = (int) (i/2);
+    pair x = (0.5+y*2, h);
+    
+    pair o = (i, 0);
+    draw(o--x);
+    
+    drawcircle(o,r);
+}
+
+for (int i=0; i<4; ++i) {
+    int y = (int) (i/2);
+    pair x  = (1.5+y*4, 2*h);
+    pair o = (0.5+i*2, h);
+    draw(o -- x);
+    
+    drawcircle(o, r);
+}
+
+for (int i=0; i<2; ++i) {
+    int y = (int) (i/2);
+    pair x  = (3.5, 3*h);
+
+    pair o = (1.5+i*4, 2*h);
+    draw(o -- x);
+
+    drawcircle(o, r);
+}
+
+pair o = (3.5, 3*h);
+drawcircle(o, r);
+
+draw((8,0) -- (9,0), arrow=Arrow()); 
+label("Level 3: $0\cdot 2^3$", (9.2,0), E);
+
+draw((7.5,h) -- (9,h), arrow=Arrow());
+label("Level 2: $1\cdot 2^2$", (9.2,h), E);
+
+draw((6.5,2*h) -- (9,2*h), arrow=Arrow());
+label("Level 1: $2\cdot 2^1$", (9.2,2*h), E);
+
+draw((4.5,3*h) -- (9,3*h), arrow=Arrow());
+label("Level 0: $3\cdot 2^0$", (9.2,3*h), E);
+
+label("Work at each level ", (8.5,3.5*h), E);
+\end{asy}
+\label{fig:heap}
+\caption{Time Complexity Analysis for Heap Construction}
+\end{figure}
 
 \end{document}  
