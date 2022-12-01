@@ -23,7 +23,7 @@
 \usepackage{enumerate}
 \usepackage{arcs}
 \usepackage{subfiles}
-
+\usepackage{hyperref}
 %SetFonts
 
 %SetFonts
@@ -70,7 +70,7 @@ class HeapSort:
             i = child
         
     def construct_heap(self):
-        i = (self.length - 1) // 2
+        i = (self.length // 2) - 1
         while i >= 0:
             self.adjust_heap(i, self.length)
             i = i - 1
@@ -92,9 +92,9 @@ Suppose we have $n = 2^{k+1}-1$ elements in the array, and these $n$ nodes just 
 The complexity comes from the fact that, starting from level $(k-2)$ to level 0, the heap adjustment for any parent node $y$ might have to adjust the whole subtree rooted at $y$, and the time complexity of this adjustment is $O(h)$, where $h$ is the height of the subtree.
 
 The time complexity for heap construction is therefore:
-\[T = 2^{k-1} \cdot 1 + 2^{k-2}\cdot 2 + 2^{k-3}\cdot 3 + \cdots + 1\cdot k.\]
+\[T = 2^{k-1} \cdot 1 + 2^{k-2}\cdot 2 + 2^{k-3}\cdot 3 + \cdots + 1\cdot k = \sum_{i=1}^{k} i\cdot 2^{k-i}.\]
 
-To calculate $T$, we have
+To calculate $T$, we apply some middle school math techniques
 \[2T = 2^k \cdot 1 + 2^{k-1}\cdot 2 + 2^{k-2}\cdot 3 + \cdots + 2\cdot k,\]
 and then,
 \[T = 2T - T = 2^k + 2^{k-1} + \cdots + 2^1 - k = 2^{k+1} - k - 2 =  n - k -1 = O(n).\]
@@ -167,5 +167,22 @@ label("Work at each level ", (8.5,3.5*h), E);
 \label{fig:heap}
 
 \end{figure}
+
+There is a nice lecture note~\cite{ref:cmsc251} with details (code, illustrations, and analysis) about the heap construction algorithm. It approximates $T$ by integral. 
+
+With
+\[T = \sum_{i=1}^{k} i\cdot 2^{k-i} = 2^k\cdot \sum_{i=1}^{k} i\cdot \left(\frac{1}{2}\right)^i,\]
+and given \[ f(x) = \sum_{i=0}^{\infty} x^i = \frac{1}{1-x}, \qquad f'(x) = \sum_{i=0}^{\infty} i\cdot x^{i-1} = \frac{1}{(1-x)^2},\]
+we have 
+\[xf'(x) = \sum_{i=0}^{\infty} i\cdot x^i = \frac{x}{(1-x)^2}.\]
+Let $x=\frac{1}{2}$, 
+\[\sum_{i=0}^{\infty} i\cdot \left(\frac{1}{2}\right)^i = \frac{\frac{1}{2}}{(1-\frac{1}{2})^2} = 2,\]
+and hence
+\[2^k\cdot \sum_{i=1}^{k} i\cdot \left(\frac{1}{2}\right)^i \le 2^k\cdot \sum_{i=0}^{\infty} i\cdot  \left(\frac{1}{2}\right)^i  = 2^{k+1} = O(n).\]
+
+In comparison, the middle school math approach is much easier.
+
+\bibliographystyle{plain}
+\bibliography{reference}
 
 \end{document}  
