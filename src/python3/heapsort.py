@@ -26,7 +26,7 @@ class HeapSort:
             i = child
         
     def construct_heap(self):
-        i = (self.length - 1) // 2
+        i = (self.length // 2) - 1
         while i >= 0:
             self.adjust_heap(i, self.length)
             i = i - 1
